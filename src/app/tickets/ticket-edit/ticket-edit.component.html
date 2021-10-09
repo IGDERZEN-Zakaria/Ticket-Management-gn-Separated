@@ -1,0 +1,70 @@
+<mat-card>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form [formGroup]="form" (submit)="onSaveTicket()" *ngIf="!isLoading">
+
+        <button *ngIf='ticket.treatedBy?.full_name!=null'  mat-raised-button style=" background-color: rgb(251, 251, 251);color: rgb(22, 16, 16);margin-right: 70px;position:relative;border-style: groove;"
+         matBadgePosition="before" disabled>
+            Pris en charge par {{ ticket.treatedBy?.full_name }}
+        </button>
+
+        <button *ngIf='ticket.etat=="IN_PROGRESS"' mat-raised-button color="accent" style="margin-left: 90%;"
+        matBadge="8" matBadgePosition="before" >
+            
+            {{ ticket.etat }}
+        </button>
+
+        <button *ngIf='ticket.etat=="PENDING"' mat-raised-button style=" background-color: rgb(49, 204, 243);color: white;margin-left: 90%;"
+        matBadge="8" matBadgePosition="before">
+            
+            {{ ticket.etat }}
+        </button>
+
+        <button *ngIf='ticket.etat=="FINISHED"' mat-raised-button style=" background-color: rgb(73, 212, 9);color: white;margin-left:90%;"
+        matBadge="8" matBadgePosition="before">
+            
+            {{ ticket.etat }}
+        </button>
+        
+
+        <mat-form-field>
+            <input style="color: rgb(226, 42, 103);font-size:24px;" matInput type="text" formControlName="createdBy" placeholder="Ticket createdBy" readonly>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="text" formControlName="intitule" placeholder="Ticket intitule" readonly>
+        </mat-form-field>
+        <mat-form-field>
+            <textarea matInput type="text" formControlName="description" placeholder="Ticket description"
+                readonly></textarea>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" formControlName="notes" placeholder="Ticket notes" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <input matInput type="text" [matDatepicker]="picker" formControlName="delai" placeholder="Ticket delai"
+                readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <textarea matInput type="text" formControlName="remarques" placeholder="Ticket remarques"
+            [readonly]="isReadOnly"></textarea>
+            <mat-error *ngIf="form.get('remarques').invalid">Please enter a ticket Remarques.</mat-error>
+        </mat-form-field>
+        <br><br><br>
+        <div>
+
+            <label  mat-stroked-button type="text" ><b> {{fileName}}</b></label><br><br>
+            <button *ngIf="userRole=='ASSISTANT_DZ'" mat-stroked-button type="button" (click)="filePicker.click()">Upload The File</button>
+            <button *ngIf="userRole=='ASSISTANT_FR'" mat-stroked-button type="button" (click)="onFileDowload()">Download The File</button>
+
+            <input type="file" #filePicker (change)="onFileUpload($event)">
+        </div>
+        <br><br>
+
+        <button mat-raised-button color="white" [routerLink]="['/listTickets']">Retour</button>
+        <button *ngIf="userRole=='ASSISTANT_DZ'" mat-raised-button color="accent" type="submit">Valider le Ticket</button>
+    </form>
+</mat-card>

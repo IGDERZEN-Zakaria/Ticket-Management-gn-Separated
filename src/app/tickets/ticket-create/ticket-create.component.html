@@ -1,0 +1,26 @@
+<mat-card>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form [formGroup]="form" (submit)="onSaveTicket()" *ngIf="!isLoading">
+        <mat-form-field>
+            <input matInput type="text" formControlName="intitule" placeholder="Ticket intitule">
+            <mat-error *ngIf="form.get('intitule').invalid">Please enter a ticket intitule.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <textarea matInput type="text" formControlName="description" placeholder="Ticket description"></textarea>
+            <mat-error *ngIf="form.get('description').invalid">Please enter a ticket description.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" formControlName="notes" placeholder="Ticket notes">
+            <mat-error *ngIf="form.get('notes').invalid">Please enter a ticket notes.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <input matInput type="text" [matDatepicker]="picker" formControlName="delai" placeholder="Ticket delai">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <button mat-raised-button color="white" [routerLink]="['/listTickets']">Retour</button>
+        <span class="spacer2"></span>
+        <button mat-raised-button color="accent" type="submit">Creer </button>
+    </form>
+</mat-card>

@@ -1,3 +1,5 @@
+========== Go to bottom ==========
+
 # MeanApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
@@ -25,3 +27,24 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+Commands to run the project =>
+## npm install
+
+
+to run the Node backend api :
+## npm run start_server
+
+
+to run the Node backend api :
+## ng serve
+
+

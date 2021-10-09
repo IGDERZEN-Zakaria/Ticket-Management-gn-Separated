@@ -1,0 +1,64 @@
+<mat-toolbar color="primary">
+
+  <span class="spacer2"></span>
+
+  <button routerLink="/" mat-button>
+    <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+  </button>
+
+
+
+
+  <button mat-button [matMenuTriggerFor]="menu2" *ngIf="userIsAuthenticated && userRole=='ASSISTANT_FR'">
+    <span class="material-icons">
+      notifications
+    </span>
+  </button>
+  <mat-menu #menu2="matMenu">
+    <div>
+
+    </div>
+  </mat-menu>
+
+
+  <button mat-button *ngIf="userIsAuthenticated" [matMenuTriggerFor]="menu">Tickets Menu</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngIf="userIsAuthenticated" routerLink="/listTickets"> List Tickets</button>
+    <button mat-menu-item *ngIf="userIsAuthenticated && userRole=='ASSISTANT_FR'" routerLink="/createTicket"
+      routerLinkActive="mat-accent">New Ticket</button>
+  </mat-menu>
+
+
+  <span class="spacer"></span>
+
+  <span *ngIf="userIsAuthenticated" style="background-color: rgb(204, 150, 1);  
+  border-radius: 2px;
+  padding: 2px;
+  border-style: groove;
+  border-radius: 10px;">
+    <a>{{userName}}</a>
+  </span>
+  <span class="spacer2"></span>
+
+  <span *ngIf="userIsAuthenticated" style="background-color: rgb(76 161 137);
+  border-radius: 2px;
+  padding: 2px;
+  border-style: groove;
+  border-radius: 10px;">
+    <a>{{userRole}}</a>
+  </span>
+  <span class="spacer2"></span>
+
+  <ul>
+
+    <li *ngIf="!userIsAuthenticated">
+      <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
+    </li>
+    <li *ngIf="!userIsAuthenticated">
+      <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
+    </li>
+    <li *ngIf="userIsAuthenticated">
+      <button mat-button (click)="onLogout()">Logout</button>
+    </li>
+  </ul>
+</mat-toolbar>

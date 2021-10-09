@@ -1,0 +1,80 @@
+<button *ngIf="userIsAuthenticated && userRole=='ASSISTANT_FR'"  mat-raised-button routerLink="/createTicket" routerLinkActive="mat-accent" style="margin-right: 70px;position:absolute;">Creer un Ticket</button>
+
+<br><br><br>
+
+<div class="col-lg-10">
+    <h2> List of Tickets</h2>
+    <ol class="breadcrumb">
+    </ol>
+</div>
+
+
+<mat-form-field appearance="fill">
+    <mat-label>Etat</mat-label>
+    <mat-select [(ngModel)]="etatSelection" (selectionChange)="onChangedFilter($event)" required>
+    <mat-option value="ALL" selected="true"> [All]</mat-option>
+      <mat-option value="PENDING">PENDING</mat-option>
+      <mat-option value="IN_PROGRESS">IN PROGRESS</mat-option>
+      <mat-option value="FINISHED">FINISHED</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+<br><br>
+<br>
+
+
+
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion multi="true" *ngIf="tickets.length > 0 && !isLoading">
+    <mat-expansion-panel *ngFor="let ticket of tickets">
+        <mat-expansion-panel-header>
+            {{ ticket.intitule }}
+            <span class="spacer"></span>
+            <button *ngIf='ticket.treatedBy?.full_name!=null'  mat-raised-button style=" background-color: rgb(251, 251, 251);color: rgb(22, 16, 16);margin-right: 70px;position:relative;"
+            matBadge="8" matBadgePosition="before">
+                Pris en charge par {{ ticket.treatedBy?.full_name }}
+            </button>
+            <button *ngIf='ticket.etat=="IN_PROGRESS"' mat-raised-button color="accent"
+            matBadge="8" matBadgePosition="before">  
+                {{ ticket.etat }}
+            </button>
+            <button *ngIf='ticket.etat=="PENDING"' mat-raised-button style=" background-color: rgb(49, 204, 243);color: white;"
+            matBadge="8" matBadgePosition="before">         
+                {{ ticket.etat }}
+            </button>
+            <button *ngIf='ticket.etat=="FINISHED"' mat-raised-button style=" background-color: rgb(73, 212, 9);color: white;"
+            matBadge="8" matBadgePosition="before">
+                
+                {{ ticket.etat }}
+            </button>
+        </mat-expansion-panel-header>
+        <mat-card-content>
+            <div class="col-sm-6">
+                <h2>ticket Details
+                </h2>
+                <hr style="width: 60%;margin-left: 2px;" />
+                <label>Date Dernier Delai : </label>
+                {{ (ticket.delai| date : "dd/MM/yyyy H:mm:ss")|| '/' }}
+                <br><br>
+                <h3><b>description :</b></h3>
+                <p>{{ticket.description}}</p>
+                <br>
+                <label>Created By :</label>
+                {{ticket.createdBy.full_name}}
+                <br>
+                <label>Treated By :</label>
+                {{ticket.treatedBy?.full_name || '/'}}
+            </div>
+        </mat-card-content>
+
+        <mat-action-row *ngIf="userIsAuthenticated" >
+            <button *ngIf="ticket.etat=='PENDING' && userRole=='ASSISTANT_DZ'"  mat-button color="primary" (click)="handleTicket(ticket)">Prendre</button>
+            <button [routerLink]="['/editTicket', ticket.id]" mat-button color="warn" *ngIf="userIsAuthenticated && userName==ticket.treatedBy?.full_name" >Regler</button>
+            <button [routerLink]="['/editTicket', ticket.id]" mat-button color="info" *ngIf="userIsAuthenticated && userRole=='ASSISTANT_FR'" >Consulter</button>
+        </mat-action-row>
+
+    </mat-expansion-panel>
+</mat-accordion>
+<mat-paginator [length]="totalTickets" [pageSize]="ticketsPerPage" [pageSizeOptions]="pageSizeOptions"
+    (page)="onChangedFilter($event)" *ngIf="tickets.length > 0"></mat-paginator>
+<p class="info-text mat-body-1" *ngIf="tickets.length <= 0 && !isLoading">No tickets added yet!</p>
